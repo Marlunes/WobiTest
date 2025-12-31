@@ -40,19 +40,65 @@ struct OrdersView: View {
                 }
             }
 
-        case .loaded(let orders):
-            List(viewModel.filteredOrders(from: orders)) { order in
-                NavigationLink(destination: OrderDetailView(order: order)) {
-                    HStack {
-                        Text(order.title)
-                            .font(.headline)
-                            .foregroundColor(.black)
-                        
-                        Spacer()
-                        
-                        Text(order.status.getName())
-                            .font(.subheadline)
-                            .foregroundColor(order.status.getColor())
+        case let .loaded(orders):
+            VStack {
+                HStack {
+                    Button("Pending") {
+                        if viewModel.filter == .pending {
+                            viewModel.filter = nil
+                        } else {
+                            viewModel.filter = .pending
+                        }
+                    }
+                    .foregroundColor(.white)
+                    .padding(.all, 12)
+                    .background {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(viewModel.filter == .pending ? Color.red : Color.gray)
+                    }
+                    
+                    Button("In transit") {
+                        if viewModel.filter == .inTransit {
+                            viewModel.filter = nil
+                        } else {
+                            viewModel.filter = .inTransit
+                        }
+                    }
+                    .foregroundColor(.white)
+                    .padding(.all, 12)
+                    .background {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(viewModel.filter == .inTransit ? Color.blue : Color.gray)
+                    }
+                    
+                    Button("Delivered") {
+                        if viewModel.filter == .delivered {
+                            viewModel.filter = nil
+                        } else {
+                            viewModel.filter = .delivered
+                        }
+                    }
+                    .foregroundColor(.white)
+                    .padding(.all, 12)
+                    .background {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(viewModel.filter == .delivered ? Color.green : Color.gray)
+                    }
+                }
+                
+                List(viewModel.filteredOrders(from: orders)) { order in
+                    NavigationLink(destination: OrderDetailView(order: order)) {
+                        HStack {
+                            Text(order.title)
+                                .font(.headline)
+                                .foregroundColor(.black)
+                            
+                            Spacer()
+                            
+                            Text(order.status.getName())
+                                .font(.subheadline)
+                                .foregroundColor(order.status.getColor())
+                        }
                     }
                 }
             }
