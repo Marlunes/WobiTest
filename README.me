@@ -1,0 +1,102 @@
+//
+//  README.me
+//  WobiTest
+//
+//  Created by Marlon Boncodin on 12/31/25.
+//
+
+# Delivery Tracking iOS App
+
+## Overview
+This is a simple iOS app built in **SwiftUI** for tracking delivery orders.
+It demonstrates:
+
+- Viewing a list of orders with status filtering
+- Viewing order details with simulated status progression
+- Handling loading, empty, and error states
+- Testable MVVM architecture
+
+No backend is required; data is **mocked**.
+
+---
+
+## Architecture & Data Flow
+
+- **MVVM (Model-View-ViewModel)** is used for separation of concerns.
+- **Models**
+  - `Order`: represents a delivery order
+  - `OrderStatus`: enum (`pending`, `inTransit`, `delivered`)
+- **ViewModels**
+  - `OrdersViewModel`: fetches and filters orders
+  - `OrderDetailViewModel`: simulates progress of a single order over time
+- **Views**
+  - `OrdersView`: displays a list of orders with filter options
+  - `OrderDetailView`: shows order status and elapsed time
+- **Data Flow**
+  1. Views observe `@Published` properties of ViewModels.
+  2. ViewModels fetch/mock data and update state.
+  3. Views automatically update when state changes.
+
+---
+
+## State Management
+
+- Explicit state modeling with `Loadable<T>` enum for list:
+  - `.idle`, `.loading`, `.loaded([Order])`, `.empty`, `.failed(String)`
+- `OrderDetailViewModel` uses `@Published` properties:
+  - `status`: current order status
+  - `elapsedTime`: seconds since order started
+- Status updates simulated via async `Task` in `simulateProgress()`.
+
+---
+
+## Testing Strategy
+
+- **Native XCTest** used for all tests.
+- **OrderListViewModel Tests**
+  - Success, empty, failure scenarios
+  - Filtering logic
+- **OrderDetailViewModel Tests**
+  - Initial state verification
+  - Status transitions over time
+  - Stop timer behavior
+- Tests are deterministic and **async/await safe**
+- `@MainActor` used in ViewModels; tests isolated accordingly.
+
+---
+
+## Trade-offs
+
+- Timer in `OrderDetailViewModel` uses 1-second delays, making real-time tests slow.
+- No persistence layer (CoreData / database) implemented due to time constraints.
+- UI is functional but not fully polished for production.
+
+---
+
+## Future Improvements
+
+- Introduce **real-time driver tracking on a map** using MapKit.
+- Faster, testable timers via dependency injection (tick interval).
+- Offline support with local caching.
+- CI/CD integration and snapshot UI tests.
+- Accessibility improvements.
+- Support for new order states (e.g., `cancelled`).
+
+---
+
+## How to Run
+
+1. Open the project in **Xcode 17+**.
+2. Select an **iPhone simulator** (not Mac Catalyst) as target.
+3. Build and run (`Cmd + R`) to launch the app.
+4. Run tests:
+   - `Cmd + U` in Xcode
+   - Tests include `WobiTestTests`
+
+---
+
+## Notes
+
+- Designed for **iOS only**, supports multiple device sizes.
+- All state changes are observable, testable, and MainActor-safe.
+- Dependencies are injected (protocol-based) for testability.
