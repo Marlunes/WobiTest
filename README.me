@@ -8,7 +8,7 @@
 # Delivery Tracking iOS App
 
 ## Overview
-This is a simple iOS app built in **SwiftUI** for tracking delivery orders.
+This is a simple iOS app built in SwiftUI for tracking delivery orders.
 It demonstrates:
 
 - Viewing a list of orders with status filtering
@@ -16,23 +16,23 @@ It demonstrates:
 - Handling loading, empty, and error states
 - Testable MVVM architecture
 
-No backend is required; data is **mocked**.
+No backend is required; data is mocked.
 
 ---
 
 ## Architecture & Data Flow
 
-- **MVVM (Model-View-ViewModel)** is used for separation of concerns.
-- **Models**
+- MVVM (Model-View-ViewModel) is used for separation of concerns.
+- Models
   - `Order`: represents a delivery order
   - `OrderStatus`: enum (`pending`, `inTransit`, `delivered`)
-- **ViewModels**
+- ViewModels
   - `OrdersViewModel`: fetches and filters orders
   - `OrderDetailViewModel`: simulates progress of a single order over time
-- **Views**
+- Views
   - `OrdersView`: displays a list of orders with filter options
   - `OrderDetailView`: shows order status and elapsed time
-- **Data Flow**
+- Data Flow
   1. Views observe `@Published` properties of ViewModels.
   2. ViewModels fetch/mock data and update state.
   3. Views automatically update when state changes.
@@ -52,15 +52,15 @@ No backend is required; data is **mocked**.
 
 ## Testing Strategy
 
-- **Native XCTest** used for all tests.
-- **OrderListViewModel Tests**
+- Native XCTest used for all tests.
+- OrderListViewModel Tests
   - Success, empty, failure scenarios
   - Filtering logic
-- **OrderDetailViewModel Tests**
+- OrderDetailViewModel Tests
   - Initial state verification
   - Status transitions over time
   - Stop timer behavior
-- Tests are deterministic and **async/await safe**
+- Tests are deterministic and async/await safe
 - `@MainActor` used in ViewModels; tests isolated accordingly.
 
 ---
@@ -75,7 +75,7 @@ No backend is required; data is **mocked**.
 
 ## Future Improvements
 
-- Introduce **real-time driver tracking on a map** using MapKit.
+- Introduce real-time driver tracking on a map using MapKit.
 - Faster, testable timers via dependency injection (tick interval).
 - Offline support with local caching.
 - CI/CD integration and snapshot UI tests.
@@ -86,8 +86,8 @@ No backend is required; data is **mocked**.
 
 ## How to Run
 
-1. Open the project in **Xcode 17+**.
-2. Select an **iPhone simulator** (not Mac Catalyst) as target.
+1. Open the project in Xcode 17+.
+2. Select an iPhone simulator (not Mac Catalyst) as target.
 3. Build and run (`Cmd + R`) to launch the app.
 4. Run tests:
    - `Cmd + U` in Xcode
@@ -97,6 +97,6 @@ No backend is required; data is **mocked**.
 
 ## Notes
 
-- Designed for **iOS only**, supports multiple device sizes.
+- Designed for iOS only, supports multiple device sizes.
 - All state changes are observable, testable, and MainActor-safe.
 - Dependencies are injected (protocol-based) for testability.
